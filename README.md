@@ -1,4 +1,4 @@
-# Comparte Ride
+# Shared Ride
 
 Shared Ride is a carpooling platform developer on 2022 as an alternative for Bogotá inhabitants during the years following the COVID-19 Pandemic restrictions, where the car usage is restricted and populations is returning back to normal.
 
