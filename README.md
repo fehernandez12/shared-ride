@@ -33,7 +33,7 @@ Please stick to the [**LICENSE**](LICENSE), you can read a TL;DR
 
 Again, this is a project I liked a lot and I will love to see it live
 again. Feel free to modify, distribute, use privately, etc (READ THE [**LICENSE**](LICENSE)) as
-you please just include the Copyright and the [**LICENSE**](LICENSE).
+you please. Just include the Copyright and the [**LICENSE**](LICENSE).
 
 ## Contributors
 
