@@ -2,9 +2,7 @@
 
 Shared Ride is a carpooling platform developer on 2022 as an alternative for Bogotá inhabitants during the years following the COVID-19 Pandemic restrictions, where the car usage is restricted and populations is returning back to normal.
 
-During the environmental contingency we want to encourage people to opt for carpooling within their own communities but most of the information in most carpooling applications is not being adequately gathered. As an immediate solution, we decided to build a very simple website (using Django) to gather and display information about these rides. 
-
-We believe Shared Ride's popularity will grow fast because of the fact that groups are private and that the only way to join a group is by getting invited by someone that is already a member.
+During the environmental contingency we want to encourage people to opt for carpooling within their own communities but most of the information in most carpooling applications is not being adequately gathered. As an immediate solution, we decided to build a very simple application (using Django REST Framework for the backend) to gather and display information about these rides. 
 
 ## Development!
 
@@ -38,5 +36,11 @@ again. Feel free to modify, distribute, use privately, etc (READ THE [**LICENSE*
 you please just include the Copyright and the [**LICENSE**](LICENSE).
 
 ## Contributors
+
+- [Felipe Hernández](https://github.com/fehernandez12)
+- [Diego Fino](https://github.com/kiridihos)
+- [Juanita Campos](https://github.com/JuanitaCampos1505)
+
+## Special Thanks to
 
 - [Pablo Trinidad](https://github.com/pablotrinidad)

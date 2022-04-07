@@ -5,7 +5,7 @@ from django.db import models
 
 
 class CRideModel(models.Model):
-    """Comparte Ride base model.
+    """Shared Ride base model.
 
     CRideModel acts as an abstract base class from which every
     other model in the project will inherit. This class provides
