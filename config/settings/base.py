@@ -2,7 +2,7 @@
 
 import environ
 
-ROOT_DIR = environ.Path(__file__)
+ROOT_DIR = environ.Path(__file__) - 2
 APPS_DIR = ROOT_DIR.path('shared-ride')
 
 env = environ.Env()
