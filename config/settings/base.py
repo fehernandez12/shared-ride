@@ -2,7 +2,7 @@
 
 import environ
 
-ROOT_DIR = environ.Path(__file__) - 3
+ROOT_DIR = environ.Path(__file__)
 APPS_DIR = ROOT_DIR.path('shared-ride')
 
 env = environ.Env()
@@ -94,7 +94,7 @@ STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    str(ROOT_DIR),
+    str(APPS_DIR.path('static')),
 ]
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
