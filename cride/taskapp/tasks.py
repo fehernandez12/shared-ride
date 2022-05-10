@@ -37,7 +37,7 @@ def send_confirmation_email(user_pk):
     user = User.objects.get(pk=user_pk)
     verification_token = gen_verification_token(user)
     subject = 'Welcome @{}! Verify your account to start using Shared Ride'.format(user.username)
-    from_email = 'Shared Ride <noreply@sharedride.com>'
+    from_email = 'Shared Ride <noreply@sharedrideapp.com>'
     content = render_to_string(
         'emails/users/account_verification.html',
         {'token': verification_token, 'user': user}
