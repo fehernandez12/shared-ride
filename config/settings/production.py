@@ -45,6 +45,9 @@ AWS_S3_OBJECT_PARAMETERS = {
 
 # Static  files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [
+    '/home/ubuntu/shared-ride/static',
+]
 
 # Media
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
