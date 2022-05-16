@@ -11,7 +11,7 @@ from cride.users.models import User, Profile
 class CustomUserAdmin(UserAdmin):
     """User model admin."""
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('phone_number')}),
+        (None, {'fields': ('phone_number',)}),
     )
     list_display = ('email', 'username', 'first_name', 'last_name', 'phone_number', 'is_staff', 'is_client')
     list_filter = ('is_client', 'is_staff', 'created', 'modified')
