@@ -17,7 +17,7 @@ class Circle(CRideModel):
     """
 
     name = models.CharField('circle name', max_length=140)
-    slug_name = models.SlugField(unique=True, max_length=40)
+    slug_name = models.SlugField(unique=True, max_length=40, blank=True)
 
     about = models.CharField('circle description', max_length=255)
     picture = models.ImageField(upload_to='circles/pictures', blank=True, null=True)
