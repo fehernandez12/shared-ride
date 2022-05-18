@@ -2,6 +2,7 @@
 
 # Django
 from django.db import models
+from django.utils.text import slugify
 
 # Utilities
 from cride.utils.models import CRideModel
@@ -55,6 +56,11 @@ class Circle(CRideModel):
     def __str__(self):
         """Return circle name."""
         return self.name
+
+    def save(self, args, **kwargs):
+        """Override save method to generate a unique slug_name."""
+        self.slug_name = slugify(self.name) if not self.slug_name else self.slug_name
+        super().save(args, **kwargs)
 
     class Meta(CRideModel.Meta):
         """Meta class."""
