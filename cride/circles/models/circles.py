@@ -65,7 +65,7 @@ class Circle(CRideModel):
 
     def save(self, *args, **kwargs):
         """Override save method to generate a unique slug_name."""
-        self.slug_name = slugify(self.name) + self.random_string_generator(6) if not self.slug_name else self.slug_name
+        self.slug_name = slugify(self.name) + self.random_string_generator(6)
         super().save(*args, **kwargs)
 
     class Meta(CRideModel.Meta):
