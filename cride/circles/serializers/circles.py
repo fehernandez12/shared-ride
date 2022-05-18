@@ -9,7 +9,7 @@ from cride.circles.models import Circle
 
 class CircleModelSerializer(serializers.ModelSerializer):
     """Circle model serializer."""
-
+    slug_name = serializers.SlugField(read_only=True)
     members_limit = serializers.IntegerField(
         required=False,
         min_value=10,
