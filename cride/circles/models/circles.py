@@ -1,6 +1,7 @@
 """Circle model."""
 
 # Django
+import random
 from django.db import models
 from django.utils.text import slugify
 
@@ -57,9 +58,12 @@ class Circle(CRideModel):
         """Return circle name."""
         return self.name
 
+    def random_string_generator(size=10, chars=str.ascii_lowercase + str.digits):
+        return ''.join(random.choice(chars) for _ in range(size))
+
     def save(self, *args, **kwargs):
         """Override save method to generate a unique slug_name."""
-        self.slug_name = slugify(self.name) if not self.slug_name else self.slug_name
+        self.slug_name = slugify(self.name) + self.random_string_generator(size=6) if not self.slug_name else self.slug_name
         super().save(*args, **kwargs)
 
     class Meta(CRideModel.Meta):
