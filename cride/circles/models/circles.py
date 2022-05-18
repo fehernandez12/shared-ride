@@ -2,6 +2,7 @@
 
 # Django
 import random
+import string
 from django.db import models
 from django.utils.text import slugify
 
@@ -58,7 +59,7 @@ class Circle(CRideModel):
         """Return circle name."""
         return self.name
 
-    def random_string_generator(size=10, chars=str.ascii_lowercase + str.digits):
+    def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
         return ''.join(random.choice(chars) for _ in range(size))
 
     def save(self, *args, **kwargs):
