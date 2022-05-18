@@ -1,10 +1,7 @@
 """Circle model."""
 
 # Django
-import random
-import string
 from django.db import models
-from django.utils.text import slugify
 
 # Utilities
 from cride.utils.models import CRideModel
@@ -19,7 +16,7 @@ class Circle(CRideModel):
     """
 
     name = models.CharField('circle name', max_length=140)
-    slug_name = models.SlugField(unique=True, max_length=40, blank=True)
+    slug_name = models.SlugField(unique=True, max_length=40)
 
     about = models.CharField('circle description', max_length=255)
     picture = models.ImageField(upload_to='circles/pictures', blank=True, null=True)
@@ -58,15 +55,6 @@ class Circle(CRideModel):
     def __str__(self):
         """Return circle name."""
         return self.name
-
-    def random_string_generator(self, size: int):
-        chars = string.ascii_lowercase + string.digits
-        return ''.join(random.choice(chars) for _ in range(size))
-
-    def save(self, *args, **kwargs):
-        """Override save method to generate a unique slug_name."""
-        self.slug_name = slugify(self.name) + self.random_string_generator(6)
-        super().save(*args, **kwargs)
 
     class Meta(CRideModel.Meta):
         """Meta class."""
