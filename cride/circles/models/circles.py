@@ -59,7 +59,7 @@ class Circle(CRideModel):
         """Return circle name."""
         return self.name
 
-    def random_string_generator(size: int):
+    def random_string_generator(self, size: int):
         chars = string.ascii_lowercase + string.digits
         return ''.join(random.choice(chars) for _ in range(size))
 
