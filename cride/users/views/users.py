@@ -79,6 +79,18 @@ class UserViewSet(mixins.RetrieveModelMixin,
         data = {'message': 'Congratulation, now go share some rides!'}
         return Response(data, status=status.HTTP_200_OK)
 
+    @action(detail=False, methods=['post'])
+    def refresh_token(self, request):
+        """Refreshes the access token, using the refresh token granted
+        in the verify view."""
+        serializer = TokenRefreshSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        tokens = serializer.save()
+        data = {
+            'tokens': tokens
+        }
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+
     @action(detail=True, methods=['put', 'patch'])
     def profile(self, request, *args, **kwargs):
         """Update profile data."""

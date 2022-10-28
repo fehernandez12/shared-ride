@@ -5,6 +5,9 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
 
+admin.site.site_header = 'Shared Ride Administration'
+admin.site.site_title = 'Shared Ride administration site'
+
 urlpatterns = [
     # Django Admin
     path(settings.ADMIN_URL, admin.site.urls),
