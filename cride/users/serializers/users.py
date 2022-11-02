@@ -15,11 +15,9 @@ from cride.users.models import User, Profile
 
 # Tasks
 from cride.taskapp.tasks import send_confirmation_email
-from cride.users.models.otp import OTP
 
 # Serializers
 from cride.users.serializers.profiles import ProfileModelSerializer
-
 
 # Utilities
 import jwt
@@ -120,68 +118,25 @@ class UserLoginSerializer(serializers.Serializer):
 class AccountVerificationSerializer(serializers.Serializer):
     """Account verification serializer."""
 
-    otp = serializers.CharField()
-    username = serializers.CharField()
+    token = serializers.CharField()
 
     def validate_token(self, data):
-        """Verify OTP."""
-        otp_instance = OTP.objects.filter(code=data)
-        if not otp_instance:
-            raise serializers.ValidationError('Invalid verification code')
-        if otp_instance.first().verified:
-            raise serializers.ValidationError('Account has been verified already.')
-        self.context['verification_otp'] = otp_instance.first().code
-        return data
+        """Verify token is valid."""
+        try:
+            payload = jwt.decode(data, settings.SECRET_KEY, algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise serializers.ValidationError('Verification link has expired.')
+        except jwt.PyJWTError:
+            raise serializers.ValidationError('Invalid token')
+        if payload['type'] != 'email_confirmation':
+            raise serializers.ValidationError('Invalid token')
 
-    def validate_username(self, data):
-        """Verify username."""
-        user = User.objects.filter(username=data).first()
-        if not user:
-            raise serializers.ValidationError('Invalid username.')
-        if user.verified:
-            raise serializers.ValidationError('Account has been verified already.')
-        self.context['username'] = user.username
+        self.context['payload'] = payload
         return data
 
     def save(self):
         """Update user's verified status."""
-        code = self.context['verification_otp']
-        otp = OTP.objects.get(code=code)
-        otp.verified = True
-        otp.save()
-        user = User.objects.get(username=self.context['username'])
-        user.verified = True
+        payload = self.context['payload']
+        user = User.objects.get(username=payload['user'])
+        user.is_verified = True
         user.save()
-
-
-class PasswordChangeSerializer(serializers.Serializer):
-    """Handles password change data. Validates the old password and
-    validates the new passwords and finally changes it."""
-    old_password = serializers.CharField()
-    new_password = serializers.CharField()
-    new_password_confirmation = serializers.CharField()
-
-    def validate_old_password(self, data):
-        user = self.instance
-        if not user.check_password(data):
-            raise serializers.ValidationError("Incorrect password.")
-        return data
-
-    def validate(self, data):
-        passwd = data['new_password']
-        passwd_conf = data['new_password_confirmation']
-        if passwd != passwd_conf:
-            raise serializers.ValidationError("Passwords don't match.")
-        password_validation.validate_password(passwd)
-        self.context['password'] = passwd
-        return data
-
-    def save(self):
-        new_passwd = self.validated_data['new_password']
-        user = self.instance
-        user.set_password(new_passwd)
-        user.save()
-        # Delete old auth token.
-        Token.objects.filter(user=user).delete()
-        token = Token.objects.create(user=user)
-        return user, token.key
