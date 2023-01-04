@@ -46,7 +46,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         method-mapped actions (create, update, partial_update,
         retrieve, list, destroy), or any custom action
         defined by the @action decorator."""
-        if self.action in ['signup', 'login', 'verify']:
+        if self.action in ['signup', 'login', 'verify', 'token_info']:
             permissions = [AllowAny]
         elif self.action in ['retrieve', 'update', 'partial_update', 'profile']:
             permissions = [IsAuthenticated, IsAccountOwner]
