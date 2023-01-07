@@ -35,7 +35,7 @@ class CreateRideRatingSerializer(serializers.ModelSerializer):
             rating_user=user,
         )
         if q.exists():
-            raise serializers.ValidationError('Rating have already been emitted!')
+            raise serializers.ValidationError('Rating has already been emitted!')
         return data
 
     def create(self, data):

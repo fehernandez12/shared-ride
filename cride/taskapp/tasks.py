@@ -13,7 +13,8 @@ from cride.users.models import User, OTP
 from cride.rides.models import Ride
 
 # Celery
-from celery.decorators import task, periodic_task
+from .celery import app as celery_app
+from celery import shared_task
 
 # Utilities
 import jwt
@@ -52,7 +53,7 @@ def gen_verification_token(user):
     return token
 
 
-@task(name='send_confirmation_email', max_retries=3)
+@celery_app.task(name='send_confirmation_email', max_retries=3)
 def send_confirmation_email(user_pk):
     """Send account verification link to given user."""
     user = User.objects.get(pk=user_pk)
@@ -68,7 +69,7 @@ def send_confirmation_email(user_pk):
     msg.send()
 
 
-@periodic_task(name='disable_finished_rides', run_every=timedelta(minutes=20))
+@celery_app.task(name='disable_finished_rides', run_every=timedelta(minutes=20))
 def disable_finished_rides():
     """Disable finished rides."""
     now = timezone.now()
@@ -83,7 +84,7 @@ def disable_finished_rides():
     rides.update(is_active=False)
 
 
-@periodic_task(name='delete_used_otp', run_every=timedelta(days=30))
+@celery_app.task(name='delete_used_otp', run_every=timedelta(days=30))
 def clean_otp():
     """Prunes the used OTP instances so that the application
     does not run out of options. Theoretically it shouldn't,

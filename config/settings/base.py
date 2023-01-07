@@ -1,6 +1,7 @@
 """Base settings to build other settings files upon."""
 
 import environ
+from celery.schedules import crontab
 
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR.path('cride')
@@ -45,7 +46,6 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
-    'rest_framework.authtoken',
     'django_filters'
 ]
 LOCAL_APPS = [
@@ -159,6 +159,16 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERYD_TASK_TIME_LIMIT = 5 * 60
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
+CELERY_BEAT_SCHEDULE = {
+    'disable_finished_rides': {
+        'task': 'cride.taskapp.tasks.disable_finished_rides',
+        'schedule': crontab(minute="*/20")
+    },
+    'clean_otp': {
+        'task': 'cride.taskapp.tasks.clean_otp',
+        'schedule': crontab(0, 0, day_of_month="1")
+    }
+}
 
 # Django REST Framework
 REST_FRAMEWORK = {
@@ -166,10 +176,12 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
 }
 
 APPEND_SLASH = False
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
