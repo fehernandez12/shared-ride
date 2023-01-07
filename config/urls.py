@@ -4,6 +4,10 @@ from django.conf import settings
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 admin.site.site_header = 'Shared Ride Administration'
 admin.site.site_title = 'Shared Ride administration site'
@@ -12,8 +16,9 @@ urlpatterns = [
     # Django Admin
     path(settings.ADMIN_URL, admin.site.urls),
 
-    path('', include(('cride.circles.urls', 'circles'), namespace='circles')),
-    path('', include(('cride.users.urls', 'users'), namespace='users')),
-    path('', include(('cride.rides.urls', 'rides'), namespace='rides')),
-
+    path('api/', include(('cride.circles.urls', 'circles'), namespace='circles')),
+    path('api/', include(('cride.users.urls', 'users'), namespace='users')),
+    path('api/', include(('cride.rides.urls', 'rides'), namespace='rides')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

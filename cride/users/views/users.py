@@ -65,10 +65,13 @@ class UserViewSet(mixins.RetrieveModelMixin,
         logged in."""
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user, token = serializer.save()
+        user, refresh, access_token = serializer.save()
         data = {
             'user': UserModelSerializer(user).data,
-            'access_token': token
+            'token': {
+                'access_token': access_token,
+                'refresh_token': refresh,
+            }
         }
         return Response(data, status=status.HTTP_201_CREATED)
 
