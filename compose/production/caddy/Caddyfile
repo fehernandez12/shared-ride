@@ -4,10 +4,10 @@ www.{$DOMAIN_NAME} {
 
 {$DOMAIN_NAME} {
     reverse_proxy django:5000 {
-        header_upstream Host {host}
-        header_upstream X-Real-IP {remote}
-        header_upstream X-Forwarded-Proto {scheme}
-        header_upstream X-CSRFToken {~csrftoken}
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-CSRFToken {~csrftoken}
     }
     log stdout
     handle_errors stdout
