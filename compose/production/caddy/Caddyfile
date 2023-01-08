@@ -12,6 +12,5 @@ www.{$DOMAIN_NAME} {
     log {
         output stdout
     }
-    handle_errors stdout
     encode gzip
 }
