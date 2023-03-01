@@ -14,6 +14,7 @@ django-environ>=0.4.5
 djangorestframework>=3.9.1
 djangorestframework-simplejwt
 django-filter>=2.0.0
+django-cors-headers
 
 # Passwords security
 argon2-cffi>=18.3.0

@@ -45,6 +45,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    'corsheaders',
     'rest_framework',
     'django_filters'
 ]
@@ -52,6 +53,7 @@ LOCAL_APPS = [
     'cride.users.apps.UsersAppConfig',
     'cride.circles.apps.CirclesAppConfig',
     'cride.rides.apps.RidesAppConfig',
+    'cride.dna.apps.DNAAppConfig',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -80,6 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Middlewares
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -161,11 +164,11 @@ CELERYD_TASK_TIME_LIMIT = 5 * 60
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERY_BEAT_SCHEDULE = {
     'disable_finished_rides': {
-        'task': 'cride.taskapp.tasks.disable_finished_rides',
+        'task': 'disable_finished_rides',
         'schedule': crontab(minute="*/20")
     },
     'clean_otp': {
-        'task': 'cride.taskapp.tasks.clean_otp',
+        'task': 'clean_otp',
         'schedule': crontab(0, 0, day_of_month="1")
     }
 }

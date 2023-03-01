@@ -179,7 +179,4 @@ class PasswordChangeSerializer(serializers.Serializer):
         user = self.instance
         user.set_password(new_passwd)
         user.save()
-        # Delete old auth token.
-        Token.objects.filter(user=user).delete()
-        token = Token.objects.create(user=user)
-        return user, token.key
+        return user

@@ -1,0 +1,127 @@
+from rest_framework import serializers
+
+DNA_BASE_PAIRS = {
+    'T': 'A',
+    'A': 'T',
+    'C': 'G',
+    'G': 'C',
+}
+
+RNA_BASE_PAIRS = {
+    'T': 'A',
+    'A': 'U',
+    'C': 'G',
+    'G': 'C',
+}
+
+AMINOACID_PAIRS = {
+    'UUU': 'F',
+    'UUC': 'F',
+    'UUA': 'L',
+    'UUG': 'L',
+    'UCU': 'S',
+    'UCC': 'S',
+    'UCA': 'S',
+    'UCG': 'S',
+    'UAU': 'Y',
+    'UAC': 'Y',
+    'UAA': '*',
+    'UAG': '*',
+    'UGU': 'C',
+    'UGC': 'C',
+    'UGA': '*',
+    'UGG': 'W',
+    'CUU': 'L',
+    'CUC': 'L',
+    'CUA': 'L',
+    'CUG': 'L',
+    'CCU': 'P',
+    'CCC': 'P',
+    'CCA': 'P',
+    'CCG': 'P',
+    'CAU': 'H',
+    'CAC': 'H',
+    'CAA': 'Q',
+    'CAG': 'Q',
+    'CGU': 'R',
+    'CGC': 'R',
+    'CGA': 'R',
+    'CGG': 'R',
+    'AUU': 'I',
+    'AUC': 'I',
+    'AUA': 'I',
+    'AUG': 'M',
+    'ACU': 'T',
+    'ACC': 'T',
+    'ACA': 'T',
+    'ACG': 'T',
+    'AAU': 'N',
+    'AAC': 'N',
+    'AAA': 'K',
+    'AAG': 'K',
+    'AGU': 'S',
+    'AGC': 'S',
+    'AGA': 'R',
+    'AGG': 'R',
+    'GUU': 'V',
+    'GUC': 'V',
+    'GUA': 'V',
+    'GUG': 'V',
+    'GCU': 'A',
+    'GCC': 'A',
+    'GCA': 'A',
+    'GCG': 'A',
+    'GAU': 'D',
+    'GAC': 'D',
+    'GAA': 'E',
+    'GAG': 'E',
+    'GGU': 'G',
+    'GGC': 'G',
+    'GGA': 'G',
+    'GGG': 'G',
+}
+
+
+class ProteinSerializer(serializers.Serializer):
+    dna_string = serializers.CharField(max_length=1000)
+
+    def group_by_3(self, s: str):
+        for i in range(len(s)):
+            if i % 3 == 0:
+                yield s[i:i+3]
+
+    def validate(self, data):
+        """Check credentials."""
+        dna_string = data['dna_string']
+        if not dna_string:
+            raise serializers.ValidationError('Invalid DNA string')
+        if len(dna_string) % 3 != 0:
+            raise serializers.ValidationError('Invalid DNA string')
+        return data
+
+    def read_dna_string(self, dna_string):
+        dna_complement = ''.join([DNA_BASE_PAIRS[base] for base in dna_string])
+        rna_string = ''.join([RNA_BASE_PAIRS[base] for base in dna_complement])
+        protein = ''.join([AMINOACID_PAIRS[base] for base in self.group_by_3(rna_string)])
+        return {
+            'dna_string': dna_string,
+            'dna_complement': dna_complement,
+            'rna_string': rna_string,
+            'protein': protein
+        }
+
+    def create(self, data):
+        dna_complement = ''.join([DNA_BASE_PAIRS[base] for base in data['dna_string']])
+        reverse_complement = dna_complement[::-1]
+        return {
+            'forward': {
+                'frame_1': self.read_dna_string(data['dna_string']),
+                'frame_2': self.read_dna_string(data['dna_string'][1:len(data['dna_string'])-2]),
+                'frame_3': self.read_dna_string(data['dna_string'][2:len(data['dna_string'])-1]),
+            },
+            'reverse': {
+                'frame_1': self.read_dna_string(reverse_complement),
+                'frame_2': self.read_dna_string(reverse_complement[1:len(dna_complement)-2]),
+                'frame_3': self.read_dna_string(reverse_complement[2:len(dna_complement)-1]),
+            }
+        }

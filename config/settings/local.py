@@ -32,3 +32,7 @@ EMAIL_PORT = 1025
 
 # django-extensions
 INSTALLED_APPS += ['django_extensions']  # noqa F405
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000'
+]

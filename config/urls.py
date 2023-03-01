@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/', include(('cride.circles.urls', 'circles'), namespace='circles')),
     path('api/', include(('cride.users.urls', 'users'), namespace='users')),
     path('api/', include(('cride.rides.urls', 'rides'), namespace='rides')),
+    path('api/', include(('cride.dna.urls', 'dna'), namespace='dna')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

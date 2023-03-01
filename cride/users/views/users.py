@@ -48,7 +48,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         defined by the @action decorator."""
         if self.action in ['signup', 'login', 'verify', 'token_info']:
             permissions = [AllowAny]
-        elif self.action in ['retrieve', 'update', 'partial_update', 'profile']:
+        elif self.action in ['update', 'partial_update', 'profile']:
             permissions = [IsAuthenticated, IsAccountOwner]
         elif self.action in ['retrieve', ]:
             permissions = [IsAuthenticated]
@@ -116,17 +116,21 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     @action(detail=True, methods=['post'])
     def password(self, request, *args, **kwargs):
-        """Update the user's password."""
+        """Update the user's password.
+
+        User should be logged out from the frontend
+        when the password is changed, so that a new
+        access_token is generated when they log back
+        in."""
         user = self.get_object()
         serializer = PasswordChangeSerializer(
             user,
             data=request.data
         )
         serializer.is_valid(raise_exception=True)
-        user, token = serializer.save()
+        user = serializer.save()
         data = {
-            'user': UserModelSerializer(user).data,
-            'access_token': token
+            'user': UserModelSerializer(user).data
         }
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
