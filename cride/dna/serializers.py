@@ -81,6 +81,30 @@ AMINOACID_PAIRS = {
     'GGG': 'G',
 }
 
+AMINOACID_DICT = {
+    'F': 'Phenylalanine',
+    'L': 'Leucine',
+    'S': 'Serine',
+    'Y': 'Tyrosine',
+    '*': 'Stop',
+    'C': 'Cysteine',
+    'W': 'Tryptophan',
+    'P': 'Proline',
+    'H': 'Histidine',
+    'Q': 'Glutamine',
+    'R': 'Arginine',
+    'I': 'Isoleucine',
+    'M': 'Methionine',
+    'T': 'Threonine',
+    'N': 'Asparagine',
+    'K': 'Lysine',
+    'V': 'Valine',
+    'A': 'Alanine',
+    'D': 'Aspartic acid',
+    'E': 'Glutamic acid',
+    'G': 'Glycine',
+}
+
 
 class ProteinSerializer(serializers.Serializer):
     dna_string = serializers.CharField(max_length=1000)
@@ -107,6 +131,7 @@ class ProteinSerializer(serializers.Serializer):
             'dna_string': dna_string,
             'dna_complement': dna_complement,
             'rna_string': rna_string,
+            'aminoacids': [AMINOACID_DICT[base] for base in protein],
             'protein': protein
         }
 
