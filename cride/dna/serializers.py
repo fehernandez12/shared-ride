@@ -107,7 +107,7 @@ AMINOACID_DICT = {
 
 
 class ProteinSerializer(serializers.Serializer):
-    dna_string = serializers.CharField(max_length=1000)
+    dna_string = serializers.CharField(max_length=65536)
 
     def group_by_3(self, s: str):
         for i in range(len(s)):
