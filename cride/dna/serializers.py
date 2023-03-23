@@ -119,8 +119,6 @@ class ProteinSerializer(serializers.Serializer):
         dna_string = data['dna_string']
         if not dna_string:
             raise serializers.ValidationError('Invalid DNA string')
-        if len(dna_string) % 3 != 0:
-            raise serializers.ValidationError('Invalid DNA string')
         return data
 
     def read_dna_string(self, dna_string):
