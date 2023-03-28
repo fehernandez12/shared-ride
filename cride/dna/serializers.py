@@ -1,3 +1,4 @@
+from typing import Generator
 from rest_framework import serializers
 
 DNA_BASE_PAIRS = {
@@ -5,6 +6,8 @@ DNA_BASE_PAIRS = {
     'A': 'T',
     'C': 'G',
     'G': 'C',
+    'N': '-',
+    '-': 'N'
 }
 
 RNA_BASE_PAIRS = {
@@ -105,11 +108,36 @@ AMINOACID_DICT = {
     'G': 'Glycine',
 }
 
+ESSENTIAL_AMINOACIDS = ['Tryptophan', 'Threonine', 'Valine', 'Lysine',
+                        'Isoleucine', 'Leucine', 'Methionine', 'Histidine', 'Phenylalanine']
+
 
 class ProteinSerializer(serializers.Serializer):
+    protein_string = serializers.CharField(max_length=65536)
+
+    def validate(self, data):
+        """Check credentials."""
+        protein_string = data['protein_string']
+        if not protein_string:
+            raise serializers.ValidationError('Invalid protein string')
+        return data
+
+    def create(self, data):
+        """Process a new protein."""
+        protein_string = data['protein_string'].upper().replace(' ', '')
+        aminoacids = [AMINOACID_DICT[base] for base in protein_string]
+        essentials = {i: aminoacids.count(i) for i in ESSENTIAL_AMINOACIDS}
+        return {
+            'protein_string': protein_string,
+            'aminoacids': aminoacids,
+            'essentials': essentials
+        }
+
+
+class DNASerializer(serializers.Serializer):
     dna_string = serializers.CharField(max_length=65536)
 
-    def group_by_3(self, s: str):
+    def group_by_3(self, s: str) -> Generator[str, None, None]:
         for i in range(len(s)):
             if i % 3 == 0:
                 yield s[i:i+3]
