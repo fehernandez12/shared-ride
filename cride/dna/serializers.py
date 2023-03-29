@@ -134,6 +134,29 @@ class ProteinSerializer(serializers.Serializer):
         }
 
 
+class ScoreSerializer(serializers.Serializer):
+    dna_string_1 = serializers.CharField(max_length=65536)
+    dna_string_2 = serializers.CharField(max_length=65536)
+
+    def create(self, data):
+        """Returns the score from comparing two DNA sequences."""
+        dna_string_1 = data['dna_string_1'].upper().replace(' ', '')
+        dna_string_2 = data['dna_string_2'].upper().replace(' ', '')
+        score = 0
+        for i in range(len(dna_string_1)):
+            if dna_string_1[i] == '-' or dna_string_2[i] == '-':
+                continue
+            elif dna_string_1[i] == dna_string_2[i]:
+                score += 1
+            else:
+                score -= 1
+        return {
+            'dna_string_1': dna_string_1,
+            'dna_string_2': dna_string_2,
+            'score': score
+        }
+
+
 class DNASerializer(serializers.Serializer):
     dna_string = serializers.CharField(max_length=65536)
 

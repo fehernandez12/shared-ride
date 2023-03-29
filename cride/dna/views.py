@@ -1,4 +1,4 @@
-from cride.dna.serializers import ProteinSerializer, DNASerializer
+from cride.dna.serializers import ProteinSerializer, DNASerializer, ScoreSerializer
 from rest_framework import viewsets, mixins, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -27,3 +27,11 @@ class ProteinViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         protein = serializer.save()
         return Response(protein, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
+    def score(self, request, *args, **kwargs):
+        """Handle score from comparing 2 DNA strings."""
+        serializer = ScoreSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        result = serializer.save()
+        return Response(result, status=status.HTTP_201_CREATED)
