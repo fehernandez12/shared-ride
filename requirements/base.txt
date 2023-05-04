@@ -16,6 +16,9 @@ djangorestframework-simplejwt
 django-filter>=2.0.0
 django-cors-headers
 
+# Django apps
+django_taggit
+
 # Passwords security
 argon2-cffi>=18.3.0
 

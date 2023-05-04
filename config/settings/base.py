@@ -42,18 +42,21 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django.contrib.postgres',
 ]
 
 THIRD_PARTY_APPS = [
     'corsheaders',
     'rest_framework',
-    'django_filters'
+    'django_filters',
+    'taggit',
 ]
 LOCAL_APPS = [
     'cride.users.apps.UsersAppConfig',
     'cride.circles.apps.CirclesAppConfig',
     'cride.rides.apps.RidesAppConfig',
     'cride.dna.apps.DNAAppConfig',
+    'cride.blog.apps.BlogAppConfig',
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -184,7 +187,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
 }
-
-APPEND_SLASH = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
