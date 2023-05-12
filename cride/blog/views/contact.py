@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from cride.blog.serializers.contact import ContactSerializer
 
 
-class ContactViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class ContactViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         permissions = [AllowAny]
         return [p() for p in permissions]
