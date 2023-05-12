@@ -1,14 +1,14 @@
 from rest_framework import serializers
+from cride.blog.models.contact import Contact
 
 from cride.blog.models.posts import Post, Status
-from taggit.serializers import (TagListSerializerField,
-                                TaggitSerializer)
+from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 
 class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
-        exclude = ('id',)
+        exclude = ("id",)
 
 
 class ListPostSerializer(serializers.ModelSerializer):
@@ -19,8 +19,11 @@ class ListPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('id', 'body',)
-        read_only_fields = ('published', 'created', 'modified')
+        exclude = (
+            "id",
+            "body",
+        )
+        read_only_fields = ("published", "created", "modified")
 
 
 class RecentListPostSerializer(serializers.ModelSerializer):
@@ -31,8 +34,8 @@ class RecentListPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('id', 'views', 'status')
-        read_only_fields = ('published', 'created', 'modified')
+        exclude = ("id", "views", "status")
+        read_only_fields = ("published", "created", "modified")
 
 
 class RelatedPostSerializer(serializers.ModelSerializer):
@@ -43,8 +46,8 @@ class RelatedPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('id', 'views', 'status')
-        read_only_fields = ('published', 'created', 'modified')
+        exclude = ("id", "views", "status")
+        read_only_fields = ("published", "created", "modified")
 
 
 class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -59,5 +62,5 @@ class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('id',)
-        read_only_fields = ('published', 'created', 'modified', 'tags')
+        exclude = ("id",)
+        read_only_fields = ("published", "created", "modified", "tags")

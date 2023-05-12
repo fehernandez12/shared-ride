@@ -4,7 +4,7 @@ from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.pagination import PageNumberPagination
 from taggit.models import Tag
 
 from cride.blog.models.posts import Post
@@ -69,7 +69,8 @@ class PostsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Ge
     @action(detail=False, methods=['get'])
     def recent(self, request, *args, **kwargs):
         """Return the last 5 published posts."""
-        queryset = Post.posted.all()[:12]
+        count = self.request.query_params.get('count', 12)
+        queryset = Post.posted.all()[:count]
         serializer = RecentListPostSerializer(queryset, many=True)
         return Response(serializer.data)
 
