@@ -22,6 +22,7 @@ class Post(CRideModel):
     """Blog post model."""
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, unique_for_date='published')
+    abstract = models.CharField(max_length=255, default='')
     body = models.TextField()
     published = models.DateTimeField(auto_now_add=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)

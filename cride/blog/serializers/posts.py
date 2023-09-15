@@ -29,30 +29,31 @@ class ListPostSerializer(serializers.ModelSerializer):
 class RecentListPostSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     slug = serializers.SlugField(required=True)
-    body = serializers.CharField(required=True)
+    abstract = serializers.CharField(required=True)
     published = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Post
-        exclude = ("id", "views", "status")
+        exclude = ("id", "views", "status", "body",)
         read_only_fields = ("published", "created", "modified")
 
 
 class RelatedPostSerializer(serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     slug = serializers.SlugField(required=True)
-    body = serializers.CharField(required=True)
+    abstract = serializers.CharField(required=True)
     published = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Post
-        exclude = ("id", "views", "status")
+        exclude = ("id", "views", "status", "body",)
         read_only_fields = ("published", "created", "modified")
 
 
 class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
     title = serializers.CharField(required=True)
     slug = serializers.SlugField(required=True)
+    abstract = serializers.CharField(required=True)
     body = serializers.CharField(required=True)
     published = serializers.DateTimeField(required=False)
     status = StatusSerializer(read_only=True)
